@@ -1,11 +1,8 @@
 
-from decimal import Decimal
+from sys import exit
+from todo.application.program import TodoApp
 
-principal = Decimal("1000.0")
-rate = Decimal("0.05")
-
-for year in range(11):
-    amount = principal * (1 + rate) ** year
-    print(f"{year:>2}{amount:>10.2f}")
-
-
+if __name__ == "__main__":
+    app = TodoApp()
+    app.run()
+    exit(app.return_code or 0)
