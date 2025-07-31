@@ -53,6 +53,8 @@ def cmd_exit():
 def cmd_show():
     global data
 
+    clrscr()
+
     view = data.copy()
     view = view.drop(columns=["id", "notes"])
     view["status"] = view["status"].apply(lambda x: "Pending" if x == 0 else "In Process" if x == 1 else "Cancelled")
@@ -97,11 +99,18 @@ def cmd_add():
     clrscr()
     cmd_show()
 
+def cmd_help():
+    clrscr()
+    print("Available commands:")
+    for name, (cmd, txt) in get_commands().items():
+        print(f"* {name} - {txt}")
+
 def get_commands():
     return {
-        "exit": cmd_exit,
-        "show": cmd_show,
-        "add": cmd_add
+        "help": (cmd_help, "Shows available application commands."),
+        "exit": (cmd_exit, "Terminates the application."),
+        "show": (cmd_show, "Displays the tasks available."),
+        "add": (cmd_add, "Adds a new task, will require further input.")
     }
 
 def run():
@@ -112,13 +121,14 @@ def run():
 
     commands = get_commands()
     while (True):
-        cmd_input = input("Command:>")
+        print("Input a command or type help")
+        cmd_input = input(":>")
         if cmd_input in commands:
-            commands[cmd_input]()
+            cmd, _ = commands[cmd_input]
+            cmd()
         else:
             print("Command not recongized.")
 
 
 if __name__ == "__main__":
     run()
-    exit(0)
