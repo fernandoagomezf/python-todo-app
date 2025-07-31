@@ -52,9 +52,23 @@ def cmd_exit():
 
 def cmd_show():
     global data
-    count = len(data)
+
+    view = data.copy()
+    view = view.drop(columns=["id", "notes"])
+    view["status"] = view["status"].apply(lambda x: "Pending" if x == 0 else "In Process" if x == 1 else "Cancelled")
+    view["progress"] = view["progress"].apply(lambda x: f"{x:.0%}")
+    view["priority"] = view["priority"].apply(lambda x: "Low" if x == 0 else "Normal" if x == 1 else "High")
+    view = view.rename(columns={
+        "code": "Code",
+        "subject": "Subject",
+        "due_date": "Due Date",
+        "status": "Status",
+        "priority": "Priority",
+        "progress": "Progress"
+    })
+
+    count = len(view)
     print(f"Found {count} task{'s' if count != 1 else ''}.")
-    view = data.drop(columns=["id", "notes"])
     result = tab.tabulate(view, headers="keys", tablefmt="psql", showindex=False)
     print(result)
 
