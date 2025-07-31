@@ -1,8 +1,110 @@
 
-from sys import exit
-from todo.application.program import TodoApp
+import base64
+import os
+import sys
+import pandas as pd
+import sqlite3 as sql
+import tabulate as tab
+import uuid
+
+app_title = "ToDo App v0.1"
+cnnstr = "todo.db"
+priority_low = 0
+priority_normal = 1
+priority_high = 2
+status_pending = 0
+status_inprocess = 1
+status_completed = 2
+
+data:pd.DataFrame = None
+
+def load_data() -> pd.DataFrame:
+    global data
+    with sql.connect(cnnstr) as cnn:
+        try:
+            data = pd.read_sql("select * from tasks", cnn, )
+        except pd.errors.DatabaseError:
+            data = pd.DataFrame({
+                'id': pd.Series(dtype='str'),
+                'code': pd.Series(dtype='str'),
+                'subject': pd.Series(dtype='str'),
+                'due_date': pd.Series(dtype='datetime64[ns]'),
+                'status': pd.Series(dtype='str'),
+                'priority': pd.Series(dtype='str'),
+                'progress': pd.Series(dtype='float'),
+                'notes': pd.Series(dtype='str')
+            })
+        return data
+
+def save_tasks():
+    with (sql.connect(cnnstr) as cnn):
+        global data
+        data.to_sql("tasks", cnn, index=False, if_exists="replace")
+
+def clrscr():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+def cmd_exit():
+    sys.exit(0)
+
+def cmd_show():
+    global data
+    count = len(data)
+    print(f"Found {count} task{'s' if count != 1 else ''}.")
+    view = data.drop(columns=["id", "notes"])
+    result = tab.tabulate(view, headers="keys", tablefmt="psql", showindex=False)
+    print(result)
+
+def cmd_add():
+    global data
+    clrscr()
+
+    print(f"Inserting a new task, please provide the following data:")
+    subject = input("* Subject: ")
+    due_date = input("* Due Date (yyyy-mm-dd): ")
+    notes = input("* Notes: ")
+    code = base64.b32encode(uuid.uuid4().bytes)[:6].decode('ascii')
+
+    data.loc[len(data)] = {
+        "id": str(uuid.uuid4()),
+        "code": code,
+        "subject": subject,
+        "due_date": due_date,
+        "status": status_pending,
+        "priority": priority_normal,
+        "progress": 0,
+        "notes": notes
+    }
+    save_tasks()
+
+    clrscr()
+    cmd_show()
+
+def get_commands():
+    return {
+        "exit": cmd_exit,
+        "show": cmd_show,
+        "add": cmd_add
+    }
+
+def run():
+    print(f"===== {app_title} =====")
+
+    load_data()
+    cmd_show()
+
+    commands = get_commands()
+    while (True):
+        cmd_input = input("Command:>")
+        if cmd_input in commands:
+            commands[cmd_input]()
+        else:
+            print("Command not recongized.")
+
 
 if __name__ == "__main__":
-    app = TodoApp()
-    app.run()
-    exit(app.return_code or 0)
+    run()
+    exit(0)
