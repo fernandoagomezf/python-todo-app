@@ -1,5 +1,6 @@
 
 import base64
+import colorama
 import datetime
 import os
 import sys
@@ -9,6 +10,7 @@ import sqlite3 as sql
 import tabulate as tab
 import uuid
 
+from colorama import Fore
 from datetime import datetime
 
 app_title = "ToDo App v0.1"
@@ -54,6 +56,29 @@ def clrscr():
 def cmd_exit():
     sys.exit(0)
 
+def task_icon(row):
+    icon = ""
+    progress = int(row["progress"])
+
+    if progress >= 1.0:
+        icon = f"{Fore.GREEN}✓{Fore.RESET}"
+    else:
+        due_date = pd.to_datetime(row["due_date"]).date()
+        today = datetime.now().date()
+        if due_date == today:
+            icon = f"{Fore.YELLOW}!{Fore.RESET}"
+        elif (due_date < today):
+            icon = f"{Fore.RED}✗{Fore.RESET}"
+
+    return icon
+
+def task_status(value):
+    match value:
+        case 0: return "Pending"
+        case 1: return "In Process"
+        case 2: return "Completed"
+        case _: return "Cancelled"
+
 def cmd_show():
     global data
 
@@ -61,7 +86,8 @@ def cmd_show():
 
     view = data.copy()
     view = view.drop(columns=["id", "notes"])
-    view["status"] = view["status"].apply(lambda x: "Pending" if x == 0 else "In Process" if x == 1 else "Cancelled")
+    view.insert(0, "", view.apply(task_icon, axis=1))
+    view["status"] = view["status"].apply(task_status)
     view["progress"] = view["progress"].apply(lambda x: f"{x:.0%}")
     view["priority"] = view["priority"].apply(lambda x: "Low" if x == 0 else "Normal" if x == 1 else "High")
     view = view.rename(columns={
@@ -155,6 +181,7 @@ def get_commands():
 def run():
     print(f"===== {app_title} =====")
 
+    colorama.init()
     load_data()
     cmd_show()
 
