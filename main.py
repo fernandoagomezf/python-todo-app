@@ -1,11 +1,15 @@
 
 import base64
+import datetime
 import os
 import sys
 import pandas as pd
+import re
 import sqlite3 as sql
 import tabulate as tab
 import uuid
+
+from datetime import datetime
 
 app_title = "ToDo App v0.1"
 cnnstr = "todo.db"
@@ -74,14 +78,49 @@ def cmd_show():
     result = tab.tabulate(view, headers="keys", tablefmt="psql", showindex=False)
     print(result)
 
+def is_valid_date(value:str) -> bool:
+    try:
+        pattern = r"^\d{4}-\d{2}-\d{2}$"
+        ismatch = re.fullmatch(pattern, value)
+        if ismatch:
+            datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        ismatch = False
+    return ismatch
+
+def input_date(field_name:str) -> str:
+    value = ""
+    while True:
+        value = input(f"\t{field_name}: ")
+        if is_valid_date(value):
+            break
+        print(f"\t** The field must be a valid date in the format yyyy-mm-dd **")
+    return value
+
+def is_valid_str(value:str, minlen=1, maxlen=250) -> bool:
+    pattern = rf"^.{{{minlen},{maxlen}}}$"
+    ismatch = re.fullmatch(pattern, value)
+    return bool(ismatch)
+
+def input_str(field_name:str, mandatory=True, maxlen=250) -> str:
+    value = ""
+    minlen = 1 if mandatory else 0
+    while True:
+        value = input(f"\t{field_name}: ")
+        if is_valid_str(value, minlen, maxlen):
+            break
+        print(f"\t** The field must have at least {minlen} characters and at most {maxlen} **")
+    return value
+
 def cmd_add():
     global data
     clrscr()
 
     print(f"Inserting a new task, please provide the following data:")
-    subject = input("* Subject: ")
-    due_date = input("* Due Date (yyyy-mm-dd): ")
-    notes = input("* Notes: ")
+
+    subject = input_str("Subject", True)
+    due_date = input_date("Due Date")
+    notes = input_str("Notes", False, 5000)
     code = base64.b32encode(uuid.uuid4().bytes)[:6].decode('ascii')
 
     data.loc[len(data)] = {
@@ -122,7 +161,7 @@ def run():
     commands = get_commands()
     while (True):
         print("Input a command or type help")
-        cmd_input = input(":>")
+        cmd_input = input(":> ")
         if cmd_input in commands:
             cmd, _ = commands[cmd_input]
             cmd()
