@@ -12,6 +12,7 @@ import uuid
 
 from colorama import Fore
 from datetime import datetime
+from typing import Tuple
 
 app_title = "ToDo App v0.1"
 cnnstr = "todo.db"
@@ -147,6 +148,23 @@ def input_task_code():
         print(f"\t** The task code is mandatory and has to be 6 characters long **")
     return value.upper()
 
+def is_valid_range(value:str, min_range:int, max_range:int) -> bool:
+    if not value.isdigit():
+        return False
+
+    num = int(value)
+    return min_range <= num <= max_range
+
+def input_number(field_name:str, range:Tuple[int, int]) -> int:
+    min_range, max_range = range
+    while True:
+        value = input(f"\t{field_name}: ")
+        if is_valid_range(value, min_range, max_range):
+            break
+
+        print(f"\t** The field must be a valid number between {min_range} and {max_range}")
+    return int(value)
+
 def cmd_add():
     global data
     clrscr()
@@ -199,7 +217,18 @@ def cmd_delete():
     cmd_show()
 
 def cmd_progress():
-    pass
+    global data
+    code = input_task_code()
+
+    if any(data["code"] == code):
+        progress = float(input_number("Progress", (0, 100)))
+        progress = round(progress / 100.0, 2)
+        data.loc[data["code"] == code, "progress"] = progress
+        data.loc[data["code"] == code, "status"] = 0 if progress <= 0.0 else 2 if progress >= 1.0 else 1
+
+        save_tasks()
+
+    cmd_show()
 
 def get_commands():
     return {
