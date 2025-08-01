@@ -23,7 +23,7 @@ status_pending = 0
 status_inprocess = 1
 status_completed = 2
 
-data:pd.DataFrame = None
+data:pd.DataFrame
 
 def load_data() -> pd.DataFrame:
     global data
@@ -69,7 +69,7 @@ def task_icon(row):
         today = datetime.now().date()
         if due_date == today:
             icon = f"{Fore.YELLOW}!{Fore.RESET}"
-        elif (due_date < today):
+        elif due_date < today:
             icon = f"{Fore.RED}✗{Fore.RESET}"
 
     return icon
@@ -117,7 +117,6 @@ def is_valid_date(value:str) -> bool:
     return ismatch
 
 def input_date(field_name:str) -> str:
-    value = ""
     while True:
         value = input(f"\t{field_name}: ")
         if is_valid_date(value):
@@ -131,7 +130,6 @@ def is_valid_str(value:str, minlen=1, maxlen=250) -> bool:
     return bool(ismatch)
 
 def input_str(field_name:str, mandatory=True, maxlen=250) -> str:
-    value = ""
     minlen = 1 if mandatory else 0
     while True:
         value = input(f"\t{field_name}: ")
@@ -155,8 +153,8 @@ def is_valid_range(value:str, min_range:int, max_range:int) -> bool:
     num = int(value)
     return min_range <= num <= max_range
 
-def input_number(field_name:str, range:Tuple[int, int]) -> int:
-    min_range, max_range = range
+def input_number(field_name:str, range_value:Tuple[int, int]) -> int:
+    min_range, max_range = range_value
     while True:
         value = input(f"\t{field_name}: ")
         if is_valid_range(value, min_range, max_range):
@@ -220,7 +218,7 @@ def cmd_progress():
     global data
     code = input_task_code()
 
-    if any(data["code"] == code):
+    if not data[data["code"] == code].empty:
         progress = float(input_number("Progress", (0, 100)))
         progress = round(progress / 100.0, 2)
         data.loc[data["code"] == code, "progress"] = progress
@@ -251,7 +249,7 @@ def run():
     cmd_show()
 
     commands = get_commands()
-    while (True):
+    while True:
         print("Input a command or type help")
         cmd_input = input(":> ")
         if cmd_input in commands:
