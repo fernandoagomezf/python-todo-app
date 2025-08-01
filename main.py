@@ -54,6 +54,7 @@ def clrscr():
         os.system('clear')
 
 def cmd_exit():
+    clrscr()
     sys.exit(0)
 
 def task_icon(row):
@@ -138,6 +139,14 @@ def input_str(field_name:str, mandatory=True, maxlen=250) -> str:
         print(f"\t** The field must have at least {minlen} characters and at most {maxlen} **")
     return value
 
+def input_task_code():
+    while True:
+        value = input(f"\tTask Code: ")
+        if is_valid_str(value, 6, 6):
+            break
+        print(f"\t** The task code is mandatory and has to be 6 characters long **")
+    return value.upper()
+
 def cmd_add():
     global data
     clrscr()
@@ -170,12 +179,39 @@ def cmd_help():
     for name, (cmd, txt) in get_commands().items():
         print(f"* {name} - {txt}")
 
+def cmd_clear():
+    clrscr()
+
+def cmd_detail():
+    pass
+
+def cmd_edit():
+    pass
+
+def cmd_delete():
+    global data
+    code = input_task_code()
+    row = data[data["code"] == code]
+    if row.index >= 0:
+        data = data.drop(row.index)
+        save_tasks()
+
+    cmd_show()
+
+def cmd_progress():
+    pass
+
 def get_commands():
     return {
-        "help": (cmd_help, "Shows available application commands."),
+        "add": (cmd_add, "Adds a new task, will require further input."),
+        "clear": (cmd_clear, "Clears the content of the screen."),
+        "delete": (cmd_delete, "Deletes a specific task from the list."),
+        "detail": (cmd_detail, "Shows the details of a specific task."),
+        "edit": (cmd_edit, "Allows you to change the details of a task."),
         "exit": (cmd_exit, "Terminates the application."),
+        "help": (cmd_help, "Shows available application commands."),
+        "progress": (cmd_progress, "Reports the advancement of a task."),
         "show": (cmd_show, "Displays the tasks available."),
-        "add": (cmd_add, "Adds a new task, will require further input.")
     }
 
 def run():
