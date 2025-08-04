@@ -283,16 +283,46 @@ def cmd_progress():
     else:
         print(f"\t** task with code {code} not found.")
 
+def cmd_promote():
+    global data
+    code = input_task_code()
+
+    row = data.index[data["code"] == code]
+    if not row.empty:
+        priority = data.at[row[0], "priority"]
+        data.at[row[0], "priority"] = min(priority + 1, 2)
+
+        save_tasks()
+        cmd_show()
+    else:
+        print(f"\t** task with code {code} not found.")
+
+def cmd_demote():
+    global data
+    code = input_task_code()
+
+    row = data.index[data["code"] == code]
+    if not row.empty:
+        priority = data.at[row[0], "priority"]
+        data.at[row[0], "priority"] = max(priority - 1, 0)
+
+        save_tasks()
+        cmd_show()
+    else:
+        print(f"\t** task with code {code} not found.")
+
 def get_commands():
     return {
         "add": (cmd_add, "Adds a new task, will require further input."),
         "clear": (cmd_clear, "Clears the content of the screen."),
         "delete": (cmd_delete, "Deletes a specific task from the list."),
+        "demote": (cmd_demote, "Decreases the priority of a task."),
         "detail": (cmd_detail, "Shows the details of a specific task."),
         "edit": (cmd_edit, "Allows you to change the details of a task."),
         "exit": (cmd_exit, "Terminates the application."),
         "help": (cmd_help, "Shows available application commands."),
         "progress": (cmd_progress, "Reports the advancement of a task."),
+        "promote" : (cmd_promote, "Increases the priority of a task."),
         "show": (cmd_show, "Displays the tasks available."),
     }
 
