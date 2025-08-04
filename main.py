@@ -81,26 +81,33 @@ def task_status(value):
         case 2: return "Completed"
         case _: return "Cancelled"
 
-def cmd_show():
+def get_view(rename_cols=True, drop_extra_cols=True):
     global data
 
-    clrscr()
-
     view = data.copy()
-    view = view.drop(columns=["id", "notes"])
+    if drop_extra_cols:
+        view = view.drop(columns=["id", "notes"])
     view.insert(0, "", view.apply(task_icon, axis=1))
     view["status"] = view["status"].apply(task_status)
     view["progress"] = view["progress"].apply(lambda x: f"{x:.0%}")
     view["priority"] = view["priority"].apply(lambda x: "Low" if x == 0 else "Normal" if x == 1 else "High")
-    view = view.rename(columns={
-        "code": "Code",
-        "subject": "Subject",
-        "due_date": "Due Date",
-        "status": "Status",
-        "priority": "Priority",
-        "progress": "Progress"
-    })
+    if rename_cols:
+        view = view.rename(columns={
+            "code": "Code",
+            "subject": "Subject",
+            "due_date": "Due Date",
+            "status": "Status",
+            "priority": "Priority",
+            "progress": "Progress",
+        })
 
+    return view
+
+def cmd_show():
+    global data
+
+    clrscr()
+    view = get_view()
     count = len(view)
     print(f"Found {count} task{'s' if count != 1 else ''}.")
     result = tab.tabulate(view, headers="keys", tablefmt="psql", showindex=False)
@@ -199,7 +206,22 @@ def cmd_clear():
     clrscr()
 
 def cmd_detail():
-    pass
+    global data
+    code = input_task_code()
+    view = get_view(False, False)
+    row = view.loc[view["code"] == code]
+    if not row.empty:
+        item = row.iloc[0]
+        print(f"\t* Code:\t\t{item["code"]}")
+        print(f"\t* Subject:\t{item["subject"]}")
+        print(f"\t* Due Date:\t{item["due_date"]}")
+        print(f"\t* Status:\t{item["status"]}")
+        print(f"\t* Priority:\t{item["priority"]}")
+        print(f"\t* Progress:\t{item["progress"]}")
+        print(f"\t* Notes:\t{item["notes"]}")
+    else:
+        print(f"\t** task with code {code} not found.")
+
 
 def cmd_edit():
     pass
@@ -211,8 +233,9 @@ def cmd_delete():
     if row.index >= 0:
         data = data.drop(row.index)
         save_tasks()
-
-    cmd_show()
+        cmd_show()
+    else:
+        print(f"\t** task with code {code} not found.")
 
 def cmd_progress():
     global data
@@ -225,8 +248,9 @@ def cmd_progress():
         data.loc[data["code"] == code, "status"] = 0 if progress <= 0.0 else 2 if progress >= 1.0 else 1
 
         save_tasks()
-
-    cmd_show()
+        cmd_show()
+    else:
+        print(f"\t** task with code {code} not found.")
 
 def get_commands():
     return {
