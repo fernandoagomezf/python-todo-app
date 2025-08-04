@@ -123,9 +123,11 @@ def is_valid_date(value:str) -> bool:
         ismatch = False
     return ismatch
 
-def input_date(field_name:str) -> str:
+def input_date(field_name:str, mandatory:bool=True) -> str:
     while True:
         value = input(f"\t{field_name}: ")
+        if not mandatory and (value is None or len(value) <= 0):
+            return str()
         if is_valid_date(value):
             break
         print(f"\t** The field must be a valid date in the format yyyy-mm-dd **")
@@ -224,7 +226,36 @@ def cmd_detail():
 
 
 def cmd_edit():
-    pass
+    global data
+    code = input_task_code()
+    view = get_view(False, False)
+    row = view.loc[view["code"] == code]
+    if not row.empty:
+        item = row.iloc[0]
+        print(f"\tEnter the new values.")
+
+        print(f"\t* Subject:\t{item["subject"]}")
+        subject = input_str("Subject", False)
+        if subject is None or len(subject) <= 0:
+            subject = item["subject"]
+        print(f"\t* Due Date:\t{item["due_date"]}")
+        due_date = input_date("Due Date", False)
+        if due_date is None or len(due_date) <= 0:
+            due_date = item["due_date"]
+        print(f"\t* Notes:\t{item["notes"]}")
+        notes = input_str("Notes", False, 5000)
+        if notes is None or len(notes) <= 0:
+            notes = item["notes"]
+
+        cols = ["subject", "due_date", "notes"]
+        vals = [subject, due_date, notes]
+        data.loc[data["code"] == code, cols] = vals
+        save_tasks()
+
+        clrscr()
+        cmd_show()
+    else:
+        print(f"\t** task with code {code} not found.")
 
 def cmd_delete():
     global data
