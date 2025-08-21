@@ -26,21 +26,33 @@ status_completed = 2
 data:pd.DataFrame
 
 def load_data() -> pd.DataFrame:
-    global data
+    global data     
     with sql.connect(cnnstr) as cnn:
         try:
-            data = pd.read_sql("select * from tasks", cnn, )
+            data = pd.read_sql("select * from tasks", cnn)
         except pd.errors.DatabaseError:
             data = pd.DataFrame({
                 'id': pd.Series(dtype='str'),
                 'code': pd.Series(dtype='str'),
                 'subject': pd.Series(dtype='str'),
                 'due_date': pd.Series(dtype='datetime64[ns]'),
-                'status': pd.Series(dtype='str'),
-                'priority': pd.Series(dtype='str'),
+                'status': pd.Series(dtype='int'),  
+                'priority': pd.Series(dtype='int'), 
                 'progress': pd.Series(dtype='float'),
                 'notes': pd.Series(dtype='str')
             })
+            cnn.execute("""
+                CREATE TABLE tasks (
+                    id TEXT PRIMARY KEY,
+                    code TEXT,
+                    subject TEXT,
+                    due_date TEXT,
+                    status INTEGER,
+                    priority INTEGER,
+                    progress REAL,
+                    notes TEXT
+                )
+            """)
         return data
 
 def save_tasks():
@@ -58,9 +70,9 @@ def cmd_exit():
     clrscr()
     sys.exit(0)
 
-def task_icon(row):
+def task_icon(row) -> str:
     icon = ""
-    progress = int(row["progress"])
+    progress = float(row["progress"]) 
 
     if progress >= 1.0:
         icon = f"{Fore.GREEN}✓{Fore.RESET}"
@@ -87,10 +99,19 @@ def get_view(rename_cols=True, drop_extra_cols=True):
     view = data.copy()
     if drop_extra_cols:
         view = view.drop(columns=["id", "notes"])
-    view.insert(0, "", view.apply(task_icon, axis=1))
-    view["status"] = view["status"].apply(task_status)
-    view["progress"] = view["progress"].apply(lambda x: f"{x:.0%}")
-    view["priority"] = view["priority"].apply(lambda x: "Low" if x == 0 else "Normal" if x == 1 else "High")
+
+    if len(view) == 0: # the dataframe is empty
+        view[""] = pd.Series(dtype='object')
+        view["status"] = pd.Series(dtype='object')
+        view["progress"] = pd.Series(dtype='object')
+        view["priority"] = pd.Series(dtype='object')
+    else:
+        icon_result = view.apply(task_icon, axis=1)    
+        view.insert(0, "", icon_result)
+        view["status"] = view["status"].apply(task_status)
+        view["progress"] = view["progress"].apply(lambda x: f"{x:.0%}")
+        view["priority"] = view["priority"].apply(lambda x: "Low" if x == 0 else "Normal" if x == 1 else "High")
+    
     if rename_cols:
         view = view.rename(columns={
             "code": "Code",
