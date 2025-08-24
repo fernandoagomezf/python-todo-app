@@ -14,6 +14,23 @@ following features:
 * Automatic status management: 0% - Pending, 100% - Completed, anywhere in between In progress.
 * Color-coded task indicators.
 
+### Available commands
+
+| Command       | Description |
+|------------   |------------|
+| **add**       | Create a new task, input the subject, due date and notes. |
+| **show**      | Display a grid with all tasks, including an icon telling whether the task is overdue or not. |
+| **detail**    | View additional information about a specific task. |
+| **edit**      | Modify an existing task by changing the subject, due date and notes. |
+| **delete**    | Remove a task completely, can't be recovered later. |
+| **progress**  | Allows to report a change in the progress of ta task, use 0 to mark the task as pending, 100 to mark it as completed. |
+| **promote**   | Increase the task priority (low -> normal, normal -> high). |
+| **demote**    | Decrease the task priority (high -> normal, normal -> low). |
+| **clear**     | Clears the screen |
+| **help**      | Shows available commands and their description |
+| **exit**      | Quits the application. |
+
+
 ## Technical specifications
 
 ### Dependencies
@@ -49,24 +66,10 @@ The application stores all the data into a local sqlite3 database file called "t
 
 If the data file is not found, it will be recreated. 
 
-## Architecture
+### Architecture
 
-The application will be a command-line application, no user 
-interface will be added other than the terminal. Possible commands:
-
-* show - displays the tasks availble, including an icon telling whether the task is overdue or not.
-* add - adds a new task, input the subject, due date and notes.
-* edit - allows to edit a specific task by changing the subject, due date and notes.
-* delete - removes an existing task.
-* detail - shows the detail of a specific task, including the notes.
-* progress - allows to report a change in the progress of ta task, use 0 to mark the task as pending, 100 to mark it as completed.
-* promote - changes the priority of a task, from low to normal, or normal to high.
-* demote - changes the priority of atask, from normal to low, or high to normal.
-
-Other commands for application management:
-* help - shows a small menu of the available commands.
-* clear - clears the screen.
-* exit - terminates the application.
+The application is a command-line application, no user 
+interface will be added other than the terminal. 
 
 The data will be persisted in a SQLite 3 local database. Internally, the data is loaded 
 when the application starts into a Pandas DataFrame, and saved as a table when a 
