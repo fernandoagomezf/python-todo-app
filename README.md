@@ -5,15 +5,51 @@ of my python learning journey.
 
 ## Functional specifications
 
-The application will be able to do the 
-following:
-* Add a new task
-* View existing tasks
-* Edit existing tasks
-* Report the advancement of a task
-* Promote or demote the priority of a task
+The application uses command-line to issue instructions. Overall, the application has the 
+following features:
+* Add, edit, delete a new task
+* View existing tasks in a simple grid view.
+* Track progress of a task (from 0% to 100%).
+* Promote or demote the priority of a task.
+* Automatic status management: 0% - Pending, 100% - Completed, anywhere in between In progress.
+* Color-coded task indicators.
 
 ## Technical specifications
+
+### Dependencies
+
+The application was built with Python 3.13 in mind. It uses the following packages:
+* sqlite3 - to persist the data in a local database file "todo.db". 
+* pandas - for loading and saving the data, using a DataFrame for data manipulation. 
+* tabulate - shows a grid in the console terminal.
+* colorama - used for color-coding characters in the grid view.
+
+**Install dependencies**:
+
+    pip install pandas sqlite3 tabulate colorama
+
+**Run the application**:
+    
+    python main.py
+
+### Database
+
+The application stores all the data into a local sqlite3 database file called "todo.db". The data is loaded/saved using DataFrame in-built methods, and the data is overwritten with every save. Since this is a small project, no further optimization is needed. The database will be created using the following schema.
+
+    CREATE TABLE tasks (
+        id TEXT PRIMARY KEY,
+        code TEXT,
+        subject TEXT,
+        due_date TEXT,
+        status INTEGER,
+        priority INTEGER,
+        progress REAL,
+        notes TEXT
+    )
+
+If the data file is not found, it will be recreated. 
+
+## Architecture
 
 The application will be a command-line application, no user 
 interface will be added other than the terminal. Possible commands:
