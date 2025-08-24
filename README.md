@@ -71,6 +71,9 @@ If the data file is not found, it will be recreated.
 The application is a command-line application, no user 
 interface will be added other than the terminal. 
 
+![alt text](./architecture.svg)
+
+
 The data will be persisted in a SQLite 3 local database. Internally, the data is loaded 
 when the application starts into a Pandas DataFrame, and saved as a table when a 
 modification is made (e.g. a new task is added or edited).
