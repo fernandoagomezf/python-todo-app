@@ -1,57 +1,63 @@
-# python-todo-app
+# Aplicación TO-DO en Python
 
-A command-line application written in Python to manage to-do tasks. This is part
-of my python learning journey. 
+Una aplicación escrita en python para gestionar una lista de tareas pendientes por realizar. Es parte de mi ruta de aprendizaje de este lenguaje.
 
-## Functional specifications
+![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-The application uses command-line to issue instructions. Overall, the application has the 
-following features:
-* Add, edit, delete a new task
-* View existing tasks in a simple grid view.
-* Track progress of a task (from 0% to 100%).
-* Promote or demote the priority of a task.
-* Automatic status management: 0% - Pending, 100% - Completed, anywhere in between In progress.
-* Color-coded task indicators.
+## Características
 
-### Available commands
+La aplicación utiliza una línea de comandos para recibir instrucciones. En general, la aplicación permite realizar las siguientes acciones: 
+* Añadir, editar y eliminar una tarea.
+* Ver las tareas existentes en una vista de tabla.
+* Rastrear el progreso de una tarea (desde 0% hasta 100%).
+* Promover o degradar la importancia de una tarea.
+* Gestión automática del estado: 
+    - 0% - _Pending_ (pendiente)
+    - 100% - _Completed_ (completado)
+    - Cualquier punto intermedio - _In Progress_ (en progreso).
+* Indicadores gráficos colorizados por el indicador de la tarea.
 
-| Command       | Description |
+### Comandos disponibles
+
+| Comando       | Descripción |
 |------------   |------------|
-| **add**       | Create a new task, input the subject, due date and notes. |
-| **show**      | Display a grid with all tasks, including an icon telling whether the task is overdue or not. |
-| **detail**    | View additional information about a specific task. |
-| **edit**      | Modify an existing task by changing the subject, due date and notes. |
-| **delete**    | Remove a task completely, can't be recovered later. |
-| **progress**  | Allows to report a change in the progress of ta task, use 0 to mark the task as pending, 100 to mark it as completed. |
-| **promote**   | Increase the task priority (low -> normal, normal -> high). |
-| **demote**    | Decrease the task priority (high -> normal, normal -> low). |
-| **clear**     | Clears the screen |
-| **help**      | Shows available commands and their description |
-| **exit**      | Quits the application. |
+| **add**       | Crear una nueva tarea, ingresando el asunto, la fecha de vencimiento y las notas. |
+| **show**      | Muestra todas las tareas en una vista de tabla, incluyendo un ícono que indica si una tarea está retrasada o no. |
+| **detail**    | Consultar información adicional y detallada sobre una tarea específica. |
+| **edit**      | Modificar una tarea existente, cambiando el asunto, la fecha de vencimiento o las notas. |
+| **delete**    | Elimina una tarea completamente, no puede ser recuperada posteriormente. |
+| **progress**  | Permite reportar cambios en el progreso de una tarea; usa 0 para marcarla como pendiente y 100 para marcarla como completada. |
+| **promote**   | Incrementa la prioridad de una tarea: si está en baja, la cambia a normal, y de normal la cambia a alta. |
+| **demote**    | Decrementa la prioridad de una tarea: si está en alta la cambia a normal, y si está en normal la cambia a baja.|
+| **clear**     | Limpia la pantalla de contenido. |
+| **help**      | Muestra los comandos disponibles junto con una breve descripción de qué hacen. |
+| **exit**      | Termina la aplicación. |
 
 
-## Technical specifications
+## Especificaciones técnicas
 
-### Dependencies
+### Dependencias
 
-The application was built with Python 3.13 in mind. It uses the following packages:
-* sqlite3 - to persist the data in a local database file "todo.db". 
-* pandas - for loading and saving the data, using a DataFrame for data manipulation. 
-* tabulate - shows a grid in the console terminal.
-* colorama - used for color-coding characters in the grid view.
+La aplicación está constuída y probada con Python 3.13. Utiliza los siguientes paquetes:
+* sqlite3 - persiste los datos en una base de datos contenida en un archivo local llamado "todo.db". 
+* pandas - se utiliza el componente DataFrame, que contiene los datos de las tareas y facilita su manipulación; asimismo permite cargar y guardar desde y hacia el disco duro. 
+* tabulate - permite darle formato de tabla a la vista principal.
+* colorama - se utiliza para codificar el color de los caracteres mostrados en la vista de tabla. 
 
-**Install dependencies**:
+**Instalar dependencias**:
 
     pip install pandas sqlite3 tabulate colorama
 
-**Run the application**:
+**Ejecutar la aplicación**:
     
     python main.py
 
-### Database
+### Base de atos
 
-The application stores all the data into a local sqlite3 database file called "todo.db". The data is loaded/saved using DataFrame in-built methods, and the data is overwritten with every save. Since this is a small project, no further optimization is needed. The database will be created using the following schema.
+La aplicación almacena todos los datos en una base de datos local de SQLite 3, la cual se guarda como un archivo llamado "todo.db". Los datos son cargados y guardados utilizando los métodos de DataFrame, y son sobreescritos cada vez que se guarda. Debido a que es un proyecto pequeño, se puede tolerar esta pequeña ineficiencia. 
+
+La base de datos utiliza el siguiente esquema:
 
     CREATE TABLE tasks (
         id TEXT PRIMARY KEY,
@@ -64,23 +70,16 @@ The application stores all the data into a local sqlite3 database file called "t
         notes TEXT
     )
 
-If the data file is not found, it will be recreated. 
+Si la base de datos no existe, la aplicación la recreará automáticamente. 
 
-### Architecture
+### Arquitectura
 
-The application is a command-line application, no user 
-interface will be added other than the terminal. 
+La aplicación utiliza línea de comandos, y no se le añadirá una interfaz de usuario adicional a la terminal. 
 
 ![alt text](./architecture.svg)
 
+Los datos son persistidos en una base de datos local en SQLite 3. Los datos son cargados cuando la aplicación inicia, y se mantienen en un DataFrame de Pandas. Cuando se hace una modificación, el DataFrame se salva completamente. 
 
-The data will be persisted in a SQLite 3 local database. Internally, the data is loaded 
-when the application starts into a Pandas DataFrame, and saved as a table when a 
-modification is made (e.g. a new task is added or edited).
+## Versiones
 
-
-## Change log
-
-v0.1 First version with all code in one file, only using functions. Hopefully in 
-the future I'll add classes and a more structured approach, for now it was a 
-very simple exercise to familiarize myself with parts of the language. 
+v0.1 Primera versión, toda la aplicación está en un archivo utilizando solo funciones. Quizás en el futuro refactorizar hacia clases y añadir un enfoque estructurado.  
