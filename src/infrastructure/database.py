@@ -1,8 +1,8 @@
 from typing import Any
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from infrastructure.models import Entity
-from infrastructure.models import Task
+from infrastructure.models import DataEntity
+from infrastructure.models import DataTask
 
 class Database():
     _db : SQLAlchemy
@@ -16,7 +16,7 @@ class Database():
         
         self._cnnstr = cnnstr
         self._engine = engine
-        self._db = SQLAlchemy(model_class=Entity)
+        self._db = SQLAlchemy(model_class=DataEntity)
         self._db.init_app(engine)
 
     def ctx(self) -> Any:
@@ -35,7 +35,7 @@ class Database():
         with self._engine.app_context():
             self._db.create_all()
 
-class Repository():
+class DatabaseRepository():
     _db: Database
 
     def __init__(self, db: Database):
@@ -46,40 +46,5 @@ class Repository():
     def get_db(self) -> Database:
         return self._db
 
-class TaskRepository(Repository):
-    def __init__(self, db: Database):
-        super().__init__(db)
 
-    def get_all(self) -> list["Task"]:
-        db = self.get_db()
-        with db.ctx():
-            return db.session.query(Task).all()
-
-    def get_by_code(self, code: str) -> "Task | None":
-        db = self.get_db()
-        with db.ctx():
-            return db.session.query(Task).filter_by(code=code).first()
-
-    def add(self, task: "Task") -> None:
-        db = self.get_db()
-        with db.ctx():
-            db.session.add(task)
-            db.session.commit()
-
-    def list_all(self) -> list["Task"]:
-        db = self.get_db()
-        with db.ctx():
-            return db.session.query(Task).all()
-        
-    def remove(self, task: "Task") -> None:
-        db = self.get_db()
-        with db.ctx():
-            db.session.delete(task)
-            db.session.commit()
-
-    def update(self, task: "Task") -> None:
-        db = self.get_db()
-        with db.ctx():
-            db.session.merge(task)
-            db.session.commit()
 

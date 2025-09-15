@@ -7,10 +7,10 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 import uuid
 
-class Entity(DeclarativeBase):
+class DataEntity(DeclarativeBase):
     pass
 
-class Task(Entity):
+class DataTask(DataEntity):
     __tablename__ = "tasks"
 
     id: Mapped[uuid.UUID] = mapped_column(
