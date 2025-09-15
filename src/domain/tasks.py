@@ -28,6 +28,10 @@ class Task(AggregateRoot):
         subject: str
     ):
         super().__init__(None)
+
+        if len(subject) == 0:
+            raise ValueError("Subject cannot be empty")
+
         self._code = str(uuid.uuid4())[:8]
         self._subject = subject
         self._due_date = datetime.now()
