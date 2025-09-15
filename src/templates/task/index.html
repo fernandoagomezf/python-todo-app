@@ -1,31 +1,33 @@
 {% extends "master.html" %}
 
 {% block content %}
+    <div class="row">
     <h1>Tasks</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Code</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Due Date</th>
-                <th scope="col">Progress</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td><a href="{{ url_for('task', task_id=task.id) }}">{{ task.code }}</a></td>
-                <td>{{ task.subject }}</td>
-                <td>{{ task.due_date }}</td>
-                <td>{{ task.progress }}</td>
-                <td>{{ task.priority }}</td>
-                <td>{{ task.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Progress</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td><a href="{{ url_for('task', task_id=task.id) }}">{{ task.code }}</a></td>
+                    <td>{{ task.subject }}</td>
+                    <td>{{ task.due_date }}</td>
+                    <td>{{ task.progress }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

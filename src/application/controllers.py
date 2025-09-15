@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import flash
 from typing import Any, Callable
+import uuid
 
 class Controller():    
     _actions: dict[str, Callable[[dict[str, Any]], Any]]
@@ -41,8 +42,43 @@ class HomeController(Controller):
         self.map("get_about", self.about)
 
     def index(self, _) -> Any:
-        return render_template("home/index.html", title="Home")
-    
+        tasks = [{
+            "id": uuid.uuid4(),
+            "code": "T-001",
+            "subject": "Task 1",            
+            "due_date": "2024-12-31"
+        }, {
+            "id": uuid.uuid4(),
+            "code": "T-002",    
+            "subject": "Task 2",
+            "due_date": "2024-11-30"
+        }, {
+            "id": uuid.uuid4(),
+            "code": "T-003",
+            "subject": "Task 3",
+            "due_date": "2024-10-31"
+        }, {
+            "id": uuid.uuid4(),
+            "code": "T-004",
+            "subject": "Task 4",
+            "due_date": "2024-10-31"
+        }, {
+            "id": uuid.uuid4(),
+            "code": "T-004",
+            "subject": "Task 4",
+            "due_date": "2024-10-31"
+        }]
+        summary = {
+            "pending": 5,
+            "in_progress": 16,
+            "closed": 21,
+            "total": 42,
+            "overdue": 42,
+            "high_priority": 5,
+            "normal_priority": 5
+        }
+        return render_template("home/index.html", title="Home", tasks=tasks, summary=summary)
+
     def about(self, _) -> Any:
         return render_template("home/about.html", title="About")
 

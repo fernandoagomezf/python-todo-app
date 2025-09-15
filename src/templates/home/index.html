@@ -1,31 +1,89 @@
 {% extends "master.html" %}
 
 {% block content %}
-    <h1>Tasks</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Code</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Due Date</th>
-                <th scope="col">Progress</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td><a href="{{ url_for('task', task_id=task.id) }}">{{ task.code }}</a></td>
-                <td>{{ task.subject }}</td>
-                <td>{{ task.due_date }}</td>
-                <td>{{ task.progress }}</td>
-                <td>{{ task.priority }}</td>
-                <td>{{ task.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+            <div class="col-lg-8">
+                <div class="card p-4 mb-4">
+                    <span class="model-badge"><i class="bi bi-diagram-3"></i> TO-DO Task List</span>
+                    <h2>Important Tasks</h2>
+                    <p class="text-muted">The following is a list of tasks to complete, please take a moment to look them over:</p>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-6">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Code</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td><a href="{{ url_for('task_detail', id=task.id) }}">{{ task.code }}</a></td>
+                                        <td>{{ task.subject }}</td>
+                                        <td>{{ task.due_date }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="button" class="btn btn-primary flex-fill" id="addBtn">
+                            <i class="bi bi-plus-circle"></i> Add New
+                        </button>
+                        <button type="button" class="btn btn-primary flex-fill" id="viewBtn">
+                            <i class="bi bi-card-list"></i> View All
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">                
+                <div class="card p-4">
+                    <h3><i class="bi bi-lightning-charge"></i> Task Summary</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Pending
+                            <span class="badge bg-primary rounded-pill">{{ summary.pending }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            In Progress
+                            <span class="badge bg-success rounded-pill">{{ summary.in_progress }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Closed
+                            <span class="badge bg-info rounded-pill">{{ summary.closed }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total
+                            <span class="badge bg-primary rounded-pill">{{ summary.total }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card p-4">
+                    <h3><i class="bi bi-speedometer2"></i> Dashboard</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Overdue
+                            <span class="badge bg-primary rounded-pill">{{ summary.overdue }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            High Priority
+                            <span class="badge bg-primary rounded-pill">{{ summary.high_priority }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Normal Priority
+                            <span class="badge bg-primary rounded-pill">{{ summary.normal_priority }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>        
+    </div>
 {% endblock %}

@@ -22,7 +22,7 @@ def home_about():
 def task_index():
     return webapp.route("task", "get_index")
 
-@webapp.get_engine().route('/task/<uuid:task_id>')
+@webapp.get_engine().route('/task/<uuid:id>')
 def task_detail(id: UUID):
     return webapp.route("task", "detail", {"id": id})
 
