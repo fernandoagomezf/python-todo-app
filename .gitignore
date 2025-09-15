@@ -211,3 +211,4 @@ __marimo__/
 
 #local database
 todo.db
+app.db 

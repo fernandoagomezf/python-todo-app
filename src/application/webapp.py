@@ -5,7 +5,7 @@ from infrastructure.database import Database
 class Config():
     _basedir = os.path.abspath(os.path.dirname(__file__))
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///" + os.path.join(_basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///" + os.path.join(_basedir, 'todo.db')
     DEBUG = True
 
 class WebApp():
