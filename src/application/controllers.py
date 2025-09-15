@@ -41,10 +41,10 @@ class HomeController(Controller):
         self.map("get_about", self.about)
 
     def index(self, _) -> Any:
-        return render_template("index.html", title="Home")
+        return render_template("home/index.html", title="Home")
     
     def about(self, _) -> Any:
-        return render_template("about.html", title="About")
+        return render_template("home/about.html", title="About")
 
     
     
