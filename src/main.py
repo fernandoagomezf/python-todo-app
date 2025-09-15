@@ -3,10 +3,12 @@ from uuid import UUID
 from application.webapp import WebApp
 from application.controllers import HomeController
 from application.controllers import TaskController
+from application.viewmodels import NewTaskViewModel
+from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
 webapp.register("home", HomeController())
-webapp.register("task", TaskController())
+webapp.register("task", TaskController(TaskRepository(webapp.get_db())))
 
 @webapp.get_engine().route("/")
 @webapp.get_engine().route("/index")
@@ -22,12 +24,11 @@ def home_about():
 def task_index():
     return webapp.route("task", "get_index")
 
-@webapp.get_engine().route('/task/<uuid:id>')
-def task_detail(id: UUID):
-    return webapp.route("task", "detail", {"id": id})
-
-@webapp.get_engine().route('/task/new')
+@webapp.get_engine().route('/task/new', methods=['GET', 'POST'])
 def task_new():
+    form = NewTaskViewModel()
+    if form.validate_on_submit():
+        return webapp.route("task", "post_new", vars(form))
     return webapp.route("task", "get_new")
 
 webapp.start()

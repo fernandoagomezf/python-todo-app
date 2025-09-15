@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask import render_template
 from flask import flash
 from typing import Any, Callable
+from infrastructure.repositories import TaskRepository
+from application.viewmodels import ViewModel
 from application.viewmodels import NewTaskViewModel
 import uuid
 
@@ -84,10 +86,15 @@ class HomeController(Controller):
         return render_template("home/about.html", title="About")
 
 class TaskController(Controller):
-    def __init__(self):
+    _repository : TaskRepository
+    def __init__(self, repository: TaskRepository):
         super().__init__()
+        if repository is None:
+            raise ValueError("Repository cannot be null")
+        self._repository = repository
         self.map("get_index", self.index)
         self.map("get_new", self.get_new)
+        self.map("post_new", self.post_new)
 
     def index(self, _) -> Any:
         return render_template("task/index.html", title="Tasks")
@@ -95,5 +102,10 @@ class TaskController(Controller):
     def get_new(self, _) -> Any:
         vm = NewTaskViewModel()
         return render_template("task/new.html", title="New Task", form=vm)
+    
+    def post_new(self, data: dict[str, Any]) -> Any:
+        mydata = data or {}
+        self.message("Task created successfully")
+        return redirect(url_for("task_index"))
 
     

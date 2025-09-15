@@ -9,9 +9,15 @@ from wtforms.validators import DataRequired
 from wtforms.validators import ValidationError
 from wtforms.validators import Email 
 from wtforms.validators import EqualTo
+from infrastructure.database import Database
 
-class NewTaskViewModel(FlaskForm):
+
+class ViewModel(FlaskForm):
+    pass
+
+class NewTaskViewModel(ViewModel):
     subject = StringField('Subject', validators=[DataRequired()])
     due_date = DateField('Due Date', format='%Y-%m-%d', validators=[DataRequired()])
     notes = TextAreaField('Notes', validators=[DataRequired()])
     submit = SubmitField('Create Task')
+    
