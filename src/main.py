@@ -28,6 +28,6 @@ def task_detail(id: UUID):
 
 @webapp.get_engine().route('/task/new')
 def task_new():
-    return webapp.route("task", "new")
+    return webapp.route("task", "get_new")
 
 webapp.start()

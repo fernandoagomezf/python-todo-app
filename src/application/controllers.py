@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import flash
 from typing import Any, Callable
+from application.viewmodels import NewTaskViewModel
 import uuid
 
 class Controller():    
@@ -86,8 +87,13 @@ class TaskController(Controller):
     def __init__(self):
         super().__init__()
         self.map("get_index", self.index)
+        self.map("get_new", self.get_new)
 
     def index(self, _) -> Any:
         return render_template("task/index.html", title="Tasks")
+    
+    def get_new(self, _) -> Any:
+        vm = NewTaskViewModel()
+        return render_template("task/new.html", title="New Task", form=vm)
 
     
