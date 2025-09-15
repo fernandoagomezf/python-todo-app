@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ML Model Analytics Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        <style>
+            body {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                color: #2c3e50;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .navbar {
+                background: linear-gradient(90deg, #2c3e50 0%, #4ca1af 100%);
+            }
+            .card {
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border: none;
+                transition: transform 0.3s ease;
+                margin-bottom: 20px;
+            }
+            .card:hover {
+                transform: translateY(-5px);
+            }
+            .model-badge {
+                background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+                color: white;
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+            .graph-container {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .img-placeholder {
+                background: #f8f9fa;
+                border: 2px dashed #dee2e6;
+                border-radius: 10px;
+                height: 300px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #6c757d;
+                margin-bottom: 20px;
+            }
+            .method-card {
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .method-card:hover {
+                background-color: #f8f9fa;
+            }
+            .method-card.active {
+                border: 2px solid #3498db;
+                background-color: #e3f2fd;
+            }
+            .code-block {
+                background: #2c3e50;
+                color: #e9ecef;
+                border-radius: 5px;
+                padding: 15px;
+                font-family: 'Courier New', monospace;
+                overflow-x: auto;
+                margin: 15px 0;
+            }
+            footer {
+                background-color: #2c3e50;
+                color: white;
+                padding: 20px 0;
+                margin-top: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="bi bi-journal-check"></i> TO-DO Application
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('index') }}"><i class="bi bi-house"></i> Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-5">
+        {% block content %}{% endblock %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}        
+        {% endif %}
+        {% endwith %}
+        </div>
+        <footer class="text-center">
+            <div class="container">
+                <p>Fernando Arturo G&oacute;mez Flores &copy; 2025</p>
+                <p class="text-muted"><a href="http://www.blendwerk.com.mx">Blendwerk IT &amp; Media</a></p>
+            </div>
+        </footer>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</html>
