@@ -5,8 +5,9 @@ from application.controllers import Controller
 
 class Config():
     _basedir = os.path.abspath(os.path.dirname(__file__))
+    _parentdir = os.path.abspath(os.path.join(_basedir, os.pardir))
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///" + os.path.join(_basedir, 'todo.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///" + os.path.join(_parentdir, 'todo.db')
     DEBUG = True
 
 class WebApp():
