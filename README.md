@@ -76,7 +76,7 @@ Si la base de datos no existe, la aplicación la recreará automáticamente.
 
 La aplicación utiliza línea de comandos, y no se le añadirá una interfaz de usuario adicional a la terminal. 
 
-![alt text](./architecture.svg)
+![alt text](./docs/architecture.svg)
 
 Los datos son persistidos en una base de datos local en SQLite 3. Los datos son cargados cuando la aplicación inicia, y se mantienen en un DataFrame de Pandas. Cuando se hace una modificación, el DataFrame se salva completamente. 
 
