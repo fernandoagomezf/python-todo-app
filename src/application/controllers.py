@@ -46,6 +46,12 @@ class HomeController(Controller):
     def about(self, _) -> Any:
         return render_template("home/about.html", title="About")
 
-    
-    
+class TaskController(Controller):
+    def __init__(self):
+        super().__init__()
+        self.map("get_index", self.index)
+
+    def index(self, _) -> Any:
+        return render_template("task/index.html", title="Tasks")
+
     
