@@ -87,3 +87,16 @@
         </div>        
     </div>
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {        
+        document.getElementById("addBtn").onclick = function () {
+            window.location.href = "{{ url_for('task_new') }}";
+        };
+        document.getElementById("viewBtn").onclick = function () {
+            window.location.href = "{{ url_for('task_index') }}";
+        };
+    });
+</script>
+{% endblock %}

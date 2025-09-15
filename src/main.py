@@ -26,4 +26,8 @@ def task_index():
 def task_detail(id: UUID):
     return webapp.route("task", "detail", {"id": id})
 
+@webapp.get_engine().route('/task/new')
+def task_new():
+    return webapp.route("task", "new")
+
 webapp.start()
