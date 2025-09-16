@@ -130,6 +130,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="reportProgressModal" tabindex="-1" aria-labelledby="reportProgressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportProgressModalLabel">Report Progress</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="progressInput">Progress (%)</label>
+                <input type="number" class="form-control" id="progressInput" name="progress" min="0" max="100" step="5.00" value="{{ (vm.progress)|round(2) if vm.progress is not none else 0 }}">
+                <small class="form-text text-muted">Enter a value between 0 and 100.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="reportProgressForm" method="post" action="{{ url_for('task_report_progress', task_id=vm.id) }}" style="display:inline;">
+                    <input type="hidden" name="progress" id="hiddenProgressInput">
+                    <button type="submit" class="btn btn-success">Save Progress</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <br/>
 {% endblock %} 
 
@@ -142,7 +164,13 @@
         window.location.href = "{{ url_for('task_edit', task_id=vm.id) }}";
     };
     document.getElementById("reportProgressButton").onclick = function() {
-        alert("Not implemented yet.");
+        var modal = new bootstrap.Modal(document.getElementById('reportProgressModal'));
+        modal.show();
+    };
+    // Copy value from visible input to hidden input on submit
+    document.getElementById("reportProgressForm").onsubmit = function(e) {
+        var progressValue = document.getElementById("progressInput").value;
+        document.getElementById("hiddenProgressInput").value = progressValue;
     };
     document.getElementById("snoozeButton").onclick = function() {
         alert("Not implemented yet.");

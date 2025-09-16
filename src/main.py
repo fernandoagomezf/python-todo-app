@@ -1,4 +1,6 @@
 from uuid import UUID
+
+from flask import request
 from application.webapp import WebApp
 from application.controllers import HomeController
 from application.controllers import TaskController
@@ -68,8 +70,9 @@ def task_demote(task_id: UUID):
 def task_cancel(task_id: UUID):
     return webapp.route("task", "post_cancel", { "id": task_id })
 
-@webapp.get_engine().route('/task/report_progress/<uuid:task_id>/<float:progress>', methods=["POST"])
-def task_report_progress(task_id: UUID, progress: float):
+@webapp.get_engine().route('/task/report_progress/<uuid:task_id>', methods=["POST"])
+def task_report_progress(task_id: UUID):
+    progress = float(request.form.get("progress"))
     return webapp.route("task", "post_report_progress", { "id": task_id, "progress": progress })
 
 webapp.start()
