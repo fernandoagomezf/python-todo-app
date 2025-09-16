@@ -6,7 +6,6 @@ from application.controllers import HomeController
 from application.controllers import TaskController
 from application.viewmodels import NewTaskViewModel
 from application.viewmodels import EditTaskViewModel
-from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
 webapp.register("home", HomeController(webapp.get_db()))
