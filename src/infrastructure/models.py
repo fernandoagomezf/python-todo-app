@@ -31,7 +31,7 @@ class DataTask(DataEntity):
     )
     due_date: Mapped[datetime] = mapped_column(
         nullable=False, 
-        default=lambda: datetime.now(timezone.utc)
+        default=lambda: datetime.now(timezone.utc).date()
     )
     status: Mapped[int] = mapped_column(
         nullable=False, 

@@ -26,9 +26,9 @@ def task_index():
 
 @webapp.get_engine().route('/task/new', methods=['GET', 'POST'])
 def task_new():
-    form = NewTaskViewModel()
-    if form.validate_on_submit():
-        return webapp.route("task", "post_new", vars(form))
+    vm = NewTaskViewModel()
+    if vm.validate_on_submit():
+        return webapp.route("task", "post_new", vm)
     return webapp.route("task", "get_new")
 
 webapp.start()

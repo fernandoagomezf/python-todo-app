@@ -17,7 +17,7 @@ class TaskPriority(Enum):
 class Task(AggregateRoot):
     _code: str
     _subject: str
-    _due_date: str
+    _due_date: datetime
     _status: int
     _priority: int
     _progress: float
@@ -34,7 +34,7 @@ class Task(AggregateRoot):
 
         self._code = str(uuid.uuid4())[:8]
         self._subject = subject
-        self._due_date = datetime.now()
+        self._due_date = datetime.now().date()
         self._status = TaskStatus.PENDING.value
         self._priority = TaskPriority.NORMAL.value
         self._progress = 0.0
@@ -79,7 +79,7 @@ class Task(AggregateRoot):
         if new_date is None and days is None:
             raise ValueError("Either days or new_date must be provided")
         if new_date is not None:
-            if new_date < datetime.now():
+            if new_date < datetime.now().date():
                 raise ValueError("New date cannot be in the past")
             self._due_date = new_date
         if days is not None:
