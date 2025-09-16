@@ -57,4 +57,12 @@ def task_detail(task_id: UUID):
 def task_complete(task_id: UUID):
     return webapp.route("task", "post_complete", { "id": task_id })
 
+@webapp.get_engine().route('/task/promote/<uuid:task_id>', methods=["POST"])
+def task_promote(task_id: UUID):
+    return webapp.route("task", "post_promote", { "id": task_id })
+
+@webapp.get_engine().route('/task/demote/<uuid:task_id>', methods=["POST"])
+def task_demote(task_id: UUID):
+    return webapp.route("task", "post_demote", { "id": task_id })
+
 webapp.start()

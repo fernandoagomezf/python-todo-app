@@ -91,6 +91,9 @@ class TaskController(Controller):
         self.map("get_edit", self.get_edit)
         self.map("post_edit", self.post_edit)
         self.map("post_complete", self.post_complete)
+        self.map("post_promote", self.post_promote)
+        self.map("post_demote", self.post_demote)
+        self.map("post_report_progress", self.post_report_progress)
 
     def index(self, _) -> Any:
         self._get_all_query.set_page_index(1)

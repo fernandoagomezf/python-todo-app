@@ -32,8 +32,8 @@
         <button id="editButton" class="btn btn-primary" type="button" value="Edit Task"><i class="bi bi-pencil"></i> Edit Notes</button>
         <button id="completeButton" class="btn btn-success" type="button" value="Complete Task" data-bs-toggle="modal" data-bs-target="#completeModal"><i class="bi bi-check2-circle"></i> Complete Task</button>
         <button id="reportProgressButton" class="btn btn-secondary" type="button" value="Report Progress"><i class="bi bi-bar-chart"></i> Report Progress</button>
-        <button id="promoteButton" class="btn btn-secondary" type="button" value="Promote Task"><i class="bi bi-arrow-up-circle"></i> Promote</button>
-        <button id="demoteButton" class="btn btn-secondary" type="button" value="Demote Task"><i class="bi bi-arrow-down-circle"></i> Demote</button>
+        <button id="promoteButton" class="btn btn-secondary" type="button" value="Promote Task" data-bs-toggle="modal" data-bs-target="#promoteModal"><i class="bi bi-arrow-up-circle"></i> Promote</button>
+        <button id="demoteButton" class="btn btn-secondary" type="button" value="Demote Task" data-bs-toggle="modal" data-bs-target="#demoteModal"><i class="bi bi-arrow-down-circle"></i> Demote</button>
         <button id="snoozeButton" class="btn btn-secondary" type="button" value="Snooze Task"><i class="bi bi-alarm"></i> Snooze</button>  
         <button id="deleteButton" class="btn btn-danger" type="button" value="Cancel"><i class="bi bi-trash"></i> Cancel</button>
 </div>
@@ -46,11 +46,63 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to complete this task?
+                This will mark the task as completed. Are you sure you want to continue?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                 <form id="completeForm" method="post" action="{{ url_for('task_complete', task_id=vm.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Yes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="promoteModal" tabindex="-1" aria-labelledby="promoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="promoteModalLabel">Promote Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if vm.priority == 0 %}
+                This will promote the task to a <b>Normal</b> priority.
+                {% elif vm.priority == 1 %}
+                This will promote the task to a <b>High</b> priority.
+                {% else %}
+                This task is already at the highest priority.
+                {% endif %}
+                Are you sure you want to continue?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <form id="promoteForm" method="post" action="{{ url_for('task_promote', task_id=vm.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Yes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="demoteModal" tabindex="-1" aria-labelledby="demoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="demoteModalLabel">Demote Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if vm.priority == 1 %}
+                This will demote the task to a <b>Low</b> priority.
+                {% elif vm.priority == 2 %}
+                This will demote the task to a <b>Normal</b> priority.
+                {% else %}
+                This task is already at the lowest priority.
+                {% endif %}
+                Are you sure you want to continue?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <form id="demoteForm" method="post" action="{{ url_for('task_demote', task_id=vm.id) }}" style="display:inline;">
                     <button type="submit" class="btn btn-success">Yes</button>
                 </form>
             </div>
@@ -69,12 +121,6 @@
         window.location.href = "{{ url_for('task_edit', task_id=vm.id) }}";
     };
     document.getElementById("reportProgressButton").onclick = function() {
-        alert("Not implemented yet.");
-    };
-    document.getElementById("promoteButton").onclick = function() {
-        alert("Not implemented yet.");
-    };
-    document.getElementById("demoteButton").onclick = function() {
         alert("Not implemented yet.");
     };
     document.getElementById("snoozeButton").onclick = function() {

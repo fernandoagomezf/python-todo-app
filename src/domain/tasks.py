@@ -109,5 +109,5 @@ class Task(AggregateRoot):
 
     def demote(self) -> None:
         if self._priority != TaskPriority.LOW.value:
-            self._priority = TaskPriority.NORMAL.value if self._priority == TaskPriority.HIGH.value else TaskPriority.HIGH.value
+            self._priority = TaskPriority.NORMAL.value if self._priority == TaskPriority.HIGH.value else TaskPriority.LOW.value
 
