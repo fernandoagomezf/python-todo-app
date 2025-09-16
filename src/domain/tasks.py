@@ -96,6 +96,9 @@ class Task(AggregateRoot):
         else:
             self._status = TaskStatus.PENDING.value
 
+    def complete(self) -> None:
+        self.report_progress(100.0)
+
     def cancel(self) -> None:
         self._status = TaskStatus.CANCELLED.value
         self._progress = 0.0

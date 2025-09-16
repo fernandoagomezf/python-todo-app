@@ -90,6 +90,7 @@ class TaskController(Controller):
         self.map("get_detail", self.get_detail)
         self.map("get_edit", self.get_edit)
         self.map("post_edit", self.post_edit)
+        self.map("post_complete", self.post_complete)
 
     def index(self, _) -> Any:
         self._get_all_query.set_page_index(1)
@@ -169,3 +170,95 @@ class TaskController(Controller):
             return redirect(url_for("task_index"))
 
         return render_template("task/detail.html", title="Task Detail", vm=result.items[0])
+    
+    def post_complete(self, data: dict[str, any]) -> Any:
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.complete()
+        self._repository.update(task)
+
+        self.message("Task marked as completed")
+        return redirect(url_for("task_detail", task_id=id))
+    
+    def post_report_progress(self, data: dict[str, any]) -> Any:
+        if data is None:
+            raise ValueError("Invalid data")
+
+        id = data["id"]
+        progress = data["progress"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        if progress is None:
+            self.error("Progress value is required")
+            return redirect(url_for("task_detail", task_id=id))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.report_progress(progress)
+        self._repository.update(task)
+
+        self.message("Task progress updated successfully")
+        return redirect(url_for("task_detail", task_id=id))
+    
+    def post_cancel(self, data: dict[str, any]) -> Any:
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.cancel()
+        self._repository.update(task)
+
+        self.message("Task cancelled successfully")
+        return redirect(url_for("task_detail", task_id=id))
+    
+    def post_promote(self, data: dict[str, any]) -> Any:
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.promote()
+        self._repository.update(task)
+
+        self.message("Task priority increased")
+        return redirect(url_for("task_detail", task_id=id))
+    
+    def post_demote(self, data: dict[str, any]) -> Any:
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.demote()
+        self._repository.update(task)
+
+        self.message("Task priority decreased")
+        return redirect(url_for("task_detail", task_id=id))

@@ -53,4 +53,8 @@ def task_edit(task_id: UUID):
 def task_detail(task_id: UUID):
     return webapp.route("task", "get_detail", { "id": task_id })
 
+@webapp.get_engine().route('/task/complete/<uuid:task_id>', methods=["POST"])
+def task_complete(task_id: UUID):
+    return webapp.route("task", "post_complete", { "id": task_id })
+
 webapp.start()
