@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 from uuid import UUID
 from infrastructure.database import Database
@@ -66,3 +67,39 @@ class GetAllTasksQuery(Query):
         with db.ctx():
             query = db.get_db().session.query(DataTask)
             return self._paginate(query)
+
+@dataclass(frozen=True)
+class Summary:
+    pending: int
+    in_progress: int
+    closed: int
+    total: int
+    overdue: int
+    high_priority: int
+    normal_priority: int
+
+class GetSummaryQuery(Query):
+    def execute(self) -> QueryResult:
+        db = self.get_db()
+        self._page_index = 1
+        self._page_size = 1000
+        with db.ctx():
+            query = db.get_db().session.query(DataTask)
+            result = self._paginate(query)
+            summary = Summary(
+                pending=sum(1 for item in result.items if item.status == 0),
+                in_progress=sum(1 for item in result.items if item.status == 1),
+                closed=sum(1 for item in result.items if item.status == 2),
+                total=len(result.items),
+                overdue=sum(1 for item in result.items if item.due_date.date() < datetime.now().date() and item.status != 2),
+                high_priority=sum(1 for item in result.items if item.priority == 2),
+                normal_priority=sum(1 for item in result.items if item.priority == 1)
+            )
+            return QueryResult(
+                items=[summary],
+                total=1,
+                page_index=1,
+                page_size=1,
+                page_count=1
+            )
+            

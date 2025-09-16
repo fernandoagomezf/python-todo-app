@@ -4,7 +4,7 @@ from flask import flash
 from typing import Any, Callable
 from domain.tasks import Task
 from infrastructure.database import Database
-from infrastructure.queries import GetAllTasksQuery
+from infrastructure.queries import GetAllTasksQuery, GetSummaryQuery
 from infrastructure.repositories import TaskRepository
 from application.viewmodels import ViewModel
 from application.viewmodels import NewTaskViewModel
@@ -42,48 +42,25 @@ class Controller():
 
 
 class HomeController(Controller):
-    def __init__(self):
+    _db : Database
+    _tasksQuery : GetAllTasksQuery
+    _summaryQuery : GetSummaryQuery
+    def __init__(self, db: Database):
         super().__init__()
+        if db is None:
+            raise ValueError("Database cannot be null")
+        self._db = db
+        self._tasksQuery = GetAllTasksQuery(db)
+        self._summaryQuery = GetSummaryQuery(db)
         self.map("get_index", self.index)
         self.map("get_about", self.about)
 
     def index(self, _) -> Any:
-        tasks = [{
-            "id": uuid.uuid4(),
-            "code": "T-001",
-            "subject": "Task 1",            
-            "due_date": "2024-12-31"
-        }, {
-            "id": uuid.uuid4(),
-            "code": "T-002",    
-            "subject": "Task 2",
-            "due_date": "2024-11-30"
-        }, {
-            "id": uuid.uuid4(),
-            "code": "T-003",
-            "subject": "Task 3",
-            "due_date": "2024-10-31"
-        }, {
-            "id": uuid.uuid4(),
-            "code": "T-004",
-            "subject": "Task 4",
-            "due_date": "2024-10-31"
-        }, {
-            "id": uuid.uuid4(),
-            "code": "T-004",
-            "subject": "Task 4",
-            "due_date": "2024-10-31"
-        }]
-        summary = {
-            "pending": 5,
-            "in_progress": 16,
-            "closed": 21,
-            "total": 42,
-            "overdue": 42,
-            "high_priority": 5,
-            "normal_priority": 5
-        }
-        return render_template("home/index.html", title="Home", tasks=tasks, summary=summary)
+        self._tasksQuery.set_page_index(1)
+        self._tasksQuery.set_page_size(5)
+        tasks = self._tasksQuery.execute()
+        summary = self._summaryQuery.execute()
+        return render_template("home/index.html", title="Home", tasks=tasks.items, summary=summary.items)
 
     def about(self, _) -> Any:
         return render_template("home/about.html", title="About")

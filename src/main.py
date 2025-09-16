@@ -7,7 +7,7 @@ from application.viewmodels import NewTaskViewModel
 from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
-webapp.register("home", HomeController())
+webapp.register("home", HomeController(webapp.get_db()))
 webapp.register("task", TaskController(webapp.get_db()))
 
 @webapp.get_engine().route("/")
