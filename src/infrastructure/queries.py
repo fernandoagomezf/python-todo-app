@@ -40,8 +40,8 @@ class Query:
         return self._page_size
     
     def set_page_size(self, size: int) -> None:
-        if size < 2:
-            raise ValueError("Page size must be greater than 1")
+        if size < 1:
+            raise ValueError("Page size must be greater than 0")
         self._page_size = size
     
     def execute(self) -> QueryResult:
@@ -66,6 +66,28 @@ class GetAllTasksQuery(Query):
         db = self.get_db()
         with db.ctx():
             query = db.get_db().session.query(DataTask)
+            return self._paginate(query)
+
+class GetTaskDetailQuery(Query):
+    _id: UUID
+    def __init__(self, db):
+        super().__init__(db)
+        if id is None:
+            raise ValueError("Task ID cannot be null")
+        self._id = None
+
+    def get_id(self) -> UUID:
+        return self._id
+    
+    def set_id(self, id: UUID) -> None:
+        if id is None:
+            raise ValueError("Task ID cannot be null")
+        self._id = id
+
+    def execute(self) -> Any:
+        db = self.get_db()
+        with db.ctx():
+            query = db.get_db().session.query(DataTask).filter(DataTask.id == self._id)
             return self._paginate(query)
 
 @dataclass(frozen=True)

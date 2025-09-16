@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+{% block content %}
+<form method="get">
+    <h2>Task {{ vm.code }}</h2>
+    <br/>
+    <div class="mb-3">
+        <label for="subject">Subject</label>
+        <input class="form-control" id="subject" name="subject" required="" size="255" type="text" value="{{ vm.subject }}" readonly />          
+    </div>    
+    <div class="mb-3">
+        <label for="due_date">Due Date</label>
+        <input class="form-control" id="due_date" name="due_date" required="" type="text" value="{{ vm.due_date.strftime('%Y-%m-%d') }}" readonly />
+    </div>
+    <div class="mb-3">
+        <label for="notes">Notes</label>
+        <textarea class="form-control" id="notes" name="notes" required="" rows="4">{{ vm.notes }}</textarea>
+    </div>
+    <div>
+        <button id="goBackButton" class="btn btn-secondary" type="button" value="Go Back"><i class="bi bi-arrow-left"></i> Go Back</button>
+        <button id="editButton" class="btn btn-primary" type="button" value="Edit Task"><i class="bi bi-pencil"></i> Edit Notes</button>
+        <button id="completeButton" class="btn btn-success" type="button" value="Complete Task"><i class="bi bi-check2-circle"></i> Complete Task</button>
+        <button id="reportProgressButton" class="btn btn-secondary" type="button" value="Report Progress"><i class="bi bi-bar-chart"></i> Report Progress</button>
+        <button id="promoteButton" class="btn btn-secondary" type="button" value="Promote Task"><i class="bi bi-arrow-up-circle"></i> Promote Task</button>
+        <button id="demoteButton" class="btn btn-secondary" type="button" value="Demote Task"><i class="bi bi-arrow-down-circle"></i> Demote Task</button>
+        <button id="deleteButton" class="btn btn-danger" type="button" value="Delete Task"><i class="bi bi-trash"></i> Delete Task</button>
+    </div>
+</form>
+{% endblock %} 
+
+{% block scripts %}
+<script>
+    document.getElementById("goBackButton").onclick = function() {
+        window.location.href = "{{ url_for('task_index') }}";
+    };
+</script>
+{% endblock %}

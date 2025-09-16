@@ -39,7 +39,6 @@ class WebApp():
         self._map[section] = controller
 
     def route(self, section: str, action: str, data: dict[str, any] = {}) -> any:
-        data = data or {}
         ctrl = self._map.get(section)
         if ctrl is None:
             raise ValueError(f"Section '{section}' not found")

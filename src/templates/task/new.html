@@ -2,32 +2,32 @@
 
 {% block content %}
 <form method="post" action="">
-    {{ form.hidden_tag() }}
+    {{ vm.hidden_tag() }}
     <h2>Create New Task</h2>
     <br/>
     <div>
-        {{ form.subject.label  }}
-        {{ form.subject(size=255, class="form-control") }}      
-        {% for error in form.subject.errors %}
+        {{ vm.subject.label  }}
+        {{ vm.subject(size=255, class="form-control") }}      
+        {% for error in vm.subject.errors %}
             <div class="alert alert-warning" role="alert">{{ error }}</div>
         {% endfor %}  
     </div>    
     <div class="mb-3">
-        {{ form.due_date.label  }}
-        {{ form.due_date(class="form-control") }}
-        {% for error in form.due_date.errors %}
+        {{ vm.due_date.label  }}
+        {{ vm.due_date(class="form-control") }}
+        {% for error in vm.due_date.errors %}
             <div class="alert alert-warning" role="alert">{{ error }}</div>
         {% endfor %}  
     </div>
     <div class="mb-3">
-        {{ form.notes.label  }}
-        {{ form.notes(rows=4, class="form-control") }}
-        {% for error in form.notes.errors %}
+        {{ vm.notes.label  }}
+        {{ vm.notes(rows=4, class="form-control") }}
+        {% for error in vm.notes.errors %}
             <div class="alert alert-warning" role="alert">{{ error }}</div>
         {% endfor %}  
     </div>
     <div>
-        {{ form.submit() }}
+        {{ vm.submit(class='btn btn-primary') }}
     </div>
 </form>
 {% endblock %}

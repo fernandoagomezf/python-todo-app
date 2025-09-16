@@ -3,7 +3,7 @@ from uuid import UUID
 from application.webapp import WebApp
 from application.controllers import HomeController
 from application.controllers import TaskController
-from application.viewmodels import NewTaskViewModel
+from application.viewmodels import NewTaskViewModel, TaskDetailViewModel
 from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
@@ -28,7 +28,16 @@ def task_index():
 def task_new():
     vm = NewTaskViewModel()
     if vm.validate_on_submit():
-        return webapp.route("task", "post_new", vm)
+        data = {
+            "subject": vm.subject.data,
+            "notes": vm.notes.data,
+            "due_date": vm.due_date.data,
+        }
+        return webapp.route("task", "post_new", data)
     return webapp.route("task", "get_new")
+
+@webapp.get_engine().route('/task/detail/<uuid:task_id>')
+def task_detail(task_id: UUID):
+    return webapp.route("task", "get_detail", { "id": task_id })
 
 webapp.start()

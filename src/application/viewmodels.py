@@ -5,6 +5,7 @@ from wtforms import DateField
 from wtforms import PasswordField
 from wtforms import BooleanField
 from wtforms import SubmitField
+from wtforms import HiddenField
 from wtforms.validators import DataRequired
 from wtforms.validators import ValidationError
 from wtforms.validators import Email 
@@ -21,3 +22,11 @@ class NewTaskViewModel(ViewModel):
     notes = TextAreaField('Notes', validators=[DataRequired()])
     submit = SubmitField('Create Task')
     
+class TaskDetailViewModel(ViewModel):
+    id = HiddenField('ID')
+    subject = StringField('Subject')
+    due_date = DateField('Due Date')
+    notes = TextAreaField('Notes')
+    priority = StringField("Priority")
+    status = StringField("Status")
+    progress = StringField("Progress")
