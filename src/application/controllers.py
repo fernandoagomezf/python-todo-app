@@ -10,9 +10,9 @@ from infrastructure.queries import GetAllTasksQuery
 from infrastructure.queries import GetSummaryQuery
 from infrastructure.queries import GetTaskDetailQuery
 from infrastructure.repositories import TaskRepository
-from application.viewmodels import ViewModel
+from application.viewmodels import EditTaskViewModel, ViewModel
 from application.viewmodels import NewTaskViewModel
-from application.viewmodels import TaskDetailViewModel
+from application.viewmodels import EditTaskViewModel
 import uuid
 
 class Controller():    
@@ -88,6 +88,8 @@ class TaskController(Controller):
         self.map("get_new", self.get_new)
         self.map("post_new", self.post_new)
         self.map("get_detail", self.get_detail)
+        self.map("get_edit", self.get_edit)
+        self.map("post_edit", self.post_edit)
 
     def index(self, _) -> Any:
         self._get_all_query.set_page_index(1)
@@ -110,6 +112,47 @@ class TaskController(Controller):
 
         self.message("Task created successfully")
         return redirect(url_for("task_index"))
+    
+    def get_edit(self, data: dict[str, any]) -> Any:
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        self._get_detail_query.set_page_index(1)
+        self._get_detail_query.set_page_size(1)
+        self._get_detail_query.set_id(id)
+        result = self._get_detail_query.execute()
+        if result is None or result.total <= 0:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+        
+        vm = EditTaskViewModel()
+        vm.id.data = str(result.items[0].id)
+        vm.subject.data = result.items[0].subject
+        vm.notes.data = result.items[0].notes
+        vm.code.data = result.items[0].code
+        return render_template("task/edit.html", title="Edit Task", vm=vm)
+    
+    def post_edit(self, data: dict[str, any]) -> Any:
+        if data is None:
+            raise ValueError("Invalid data")
+
+        id = data["id"]
+        if id is None:
+            self.error("Task ID is required")
+            return redirect(url_for("task_index"))
+        
+        task = self._repository.get_by_id(id)
+        if task is None:
+            self.error("Task not found")
+            return redirect(url_for("task_index"))
+
+        task.update_content(notes=data["notes"], subject=data["subject"])
+        self._repository.update(task)
+
+        self.message("Task updated successfully")
+        return redirect(url_for("task_detail", task_id=id))
 
     def get_detail(self, data: dict[str, any]) -> Any:
         id = data["id"]

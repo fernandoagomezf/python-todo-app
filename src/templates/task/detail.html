@@ -23,8 +23,10 @@
         <button id="reportProgressButton" class="btn btn-secondary" type="button" value="Report Progress"><i class="bi bi-bar-chart"></i> Report Progress</button>
         <button id="promoteButton" class="btn btn-secondary" type="button" value="Promote Task"><i class="bi bi-arrow-up-circle"></i> Promote Task</button>
         <button id="demoteButton" class="btn btn-secondary" type="button" value="Demote Task"><i class="bi bi-arrow-down-circle"></i> Demote Task</button>
+        <button id="snoozeButton" class="btn btn-secondary" type="button" value="Snooze Task"><i class="bi bi-alarm"></i> Snooze Task</button>  
         <button id="deleteButton" class="btn btn-danger" type="button" value="Delete Task"><i class="bi bi-trash"></i> Delete Task</button>
     </div>
+    <br/>
 </form>
 {% endblock %} 
 
@@ -32,6 +34,9 @@
 <script>
     document.getElementById("goBackButton").onclick = function() {
         window.location.href = "{{ url_for('task_index') }}";
+    };
+    document.getElementById("editButton").onclick = function() {
+        window.location.href = "{{ url_for('task_edit', task_id=vm.id) }}";
     };
 </script>
 {% endblock %}

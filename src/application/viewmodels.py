@@ -22,11 +22,9 @@ class NewTaskViewModel(ViewModel):
     notes = TextAreaField('Notes', validators=[DataRequired()])
     submit = SubmitField('Create Task')
     
-class TaskDetailViewModel(ViewModel):
+class EditTaskViewModel(ViewModel):
     id = HiddenField('ID')
     subject = StringField('Subject')
-    due_date = DateField('Due Date')
     notes = TextAreaField('Notes')
-    priority = StringField("Priority")
-    status = StringField("Status")
-    progress = StringField("Progress")
+    code = StringField("Code")
+    submit = SubmitField('Save Changes')

@@ -9,7 +9,7 @@ class TaskRepository(DatabaseRepository):
         super().__init__(db)
 
     def _map_to_domain(self, dto: DataTask) -> Task:
-        task = Task(task.subject)
+        task = Task(dto.subject)
         task._id = dto.id
         task._code = dto.code
         task._due_date = dto.due_date 
@@ -34,7 +34,7 @@ class TaskRepository(DatabaseRepository):
     def get_all(self) -> list["Task"]:
         db = self.get_db()
         with db.ctx():
-            dto = db.session.query(Task).all()
+            dto = db.get_db().session.query(Task).all()
         return [self._map_to_domain(task) for task in dto]
     
     def get_by_id(self, id: UUID) -> "Task | None":
@@ -42,7 +42,7 @@ class TaskRepository(DatabaseRepository):
             raise ValueError("ID cannot be null")
         db = self.get_db()
         with db.ctx():
-            dto = db.session.query(Task).filter_by(id=id).first()
+            dto = db.get_db().session.query(DataTask).filter_by(id=id).first()
             if dto is None:
                 raise ValueError(f"Task with ID '{id}' not found")
             return self._map_to_domain(dto)
@@ -52,7 +52,7 @@ class TaskRepository(DatabaseRepository):
             raise ValueError("Code cannot be null or empty")
         db = self.get_db()
         with db.ctx():
-            return db.session.query(Task).filter_by(code=code).first()
+            return db.get_db().session.query(Task).filter_by(code=code).first()
 
     def add(self, task: "Task") -> None:
         if task is None:

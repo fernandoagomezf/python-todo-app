@@ -3,7 +3,8 @@ from uuid import UUID
 from application.webapp import WebApp
 from application.controllers import HomeController
 from application.controllers import TaskController
-from application.viewmodels import NewTaskViewModel, TaskDetailViewModel
+from application.viewmodels import NewTaskViewModel
+from application.viewmodels import EditTaskViewModel
 from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
@@ -35,6 +36,18 @@ def task_new():
         }
         return webapp.route("task", "post_new", data)
     return webapp.route("task", "get_new")
+
+@webapp.get_engine().route('/task/edit/<uuid:task_id>', methods=['GET', 'POST'])
+def task_edit(task_id: UUID):
+    vm = EditTaskViewModel()
+    if vm.validate_on_submit():
+        data = {
+            "id": task_id,
+            "subject": vm.subject.data,
+            "notes": vm.notes.data,
+        }
+        return webapp.route("task", "post_edit", data)
+    return webapp.route("task", "get_edit", { "id": task_id })
 
 @webapp.get_engine().route('/task/detail/<uuid:task_id>')
 def task_detail(task_id: UUID):
