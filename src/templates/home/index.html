@@ -23,7 +23,7 @@
                                     {% for task in tasks %}
                                     <tr>
                                         <th scope="row">{{ loop.index }}</th>
-                                        <td><a href="{{ url_for('task_detail', id=task.id) }}">{{ task.code }}</a></td>
+                                        <td><a href="#">{{ task.code }}</a></td>
                                         <td>{{ task.subject }}</td>
                                         <td>{{ task.due_date }}</td>
                                     </tr>
@@ -35,7 +35,7 @@
                     
                     <div class="mt-4 d-flex gap-2">
                         <button type="button" class="btn btn-primary flex-fill" id="addBtn">
-                            <i class="bi bi-plus-circle"></i> Add New
+                            <i class="bi bi-plus-circle"></i> Create New
                         </button>
                         <button type="button" class="btn btn-primary flex-fill" id="viewBtn">
                             <i class="bi bi-card-list"></i> View All

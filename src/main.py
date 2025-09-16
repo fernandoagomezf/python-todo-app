@@ -8,7 +8,7 @@ from infrastructure.repositories import TaskRepository
 
 webapp = WebApp(__name__)
 webapp.register("home", HomeController())
-webapp.register("task", TaskController(TaskRepository(webapp.get_db())))
+webapp.register("task", TaskController(webapp.get_db()))
 
 @webapp.get_engine().route("/")
 @webapp.get_engine().route("/index")

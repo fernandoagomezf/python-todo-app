@@ -3,6 +3,8 @@ from flask import render_template
 from flask import flash
 from typing import Any, Callable
 from domain.tasks import Task
+from infrastructure.database import Database
+from infrastructure.queries import GetAllTasksQuery
 from infrastructure.repositories import TaskRepository
 from application.viewmodels import ViewModel
 from application.viewmodels import NewTaskViewModel
@@ -87,19 +89,27 @@ class HomeController(Controller):
         return render_template("home/about.html", title="About")
 
 class TaskController(Controller):
+    _db : Database
     _repository : TaskRepository
-    def __init__(self, repository: TaskRepository):
+    _query: GetAllTasksQuery
+
+    def __init__(self, db: Database):
         super().__init__()
-        if repository is None:
-            raise ValueError("Repository cannot be null")
-        self._repository = repository
+        if db is None:
+            raise ValueError("Database cannot be null")
+        self._db = db
+        self._repository = TaskRepository(db)
+        self._query = GetAllTasksQuery(db)
         self.map("get_index", self.index)
         self.map("get_new", self.get_new)
         self.map("post_new", self.post_new)
 
     def index(self, _) -> Any:
-        return render_template("task/index.html", title="Tasks")
-    
+        self._query.set_page_index(1)
+        self._query.set_page_size(1000)
+        result = self._query.execute()
+        return render_template("task/index.html", title="Tasks", query=result   )
+
     def get_new(self, _) -> Any:
         vm = NewTaskViewModel()
         return render_template("task/new.html", title="New Task", form=vm)
