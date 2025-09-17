@@ -113,4 +113,5 @@ The application uses Bootstrap 5 to layer out the UI elements in the web page. P
 ## Versions
 
 v0.2 web app release: the applicaton was turned from a command line app into a full-blown web application. 
+
 v0.1 First release: the entire application lives in a single file using only functions. A future refactor to classes and a more structured design may be considered.
