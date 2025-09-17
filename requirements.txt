@@ -1,0 +1,5 @@
+Flask
+Flask-WTF
+Flask-SQLAlchemy
+SQLAlchemy
+# sqlite3 is included in Python standard library; no pip install required
