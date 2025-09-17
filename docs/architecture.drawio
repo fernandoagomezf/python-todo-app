@@ -1,43 +1,91 @@
-<mxfile>
-  <diagram id="0" name="Page-1">
-    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="2" value="User Interface (CLI)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="120" y="240" width="120" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="3" value="Business Logic (Commands)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="360" y="240" width="120" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="4" value="Data Storage (SQLite)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="600" y="240" width="120" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="5" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1" source="2" target="3">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="240" y="270" as="sourcePoint"/>
-            <mxPoint x="290" y="220" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="6" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1" source="3" target="4">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="480" y="270" as="sourcePoint"/>
-            <mxPoint x="530" y="220" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1" source="3" target="2">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="480" y="270" as="sourcePoint"/>
-            <mxPoint x="530" y="220" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="8" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1" source="4" target="3">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="720" y="270" as="sourcePoint"/>
-            <mxPoint x="770" y="220" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram id="0" name="Page-1">
+        <mxGraphModel dx="1069" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="8" value="application" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="40" width="570" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="viewmodels" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="8">
+                    <mxGeometry x="210" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="ViewModel&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;NewTaskViewModel&lt;br&gt;&lt;/font&gt;&lt;div&gt;EditTaskViewModel&lt;/div&gt;&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="22">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="webapp" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="8">
+                    <mxGeometry x="400" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Config&lt;div&gt;WebApp&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="25">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" value="Infrastructure" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="230" width="760" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="database" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="9">
+                    <mxGeometry x="30" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Database&lt;div&gt;DatabasRepository&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="27">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="models" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="9">
+                    <mxGeometry x="210" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="DataEntity&lt;div&gt;DataTask&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="29">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" value="repositories" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="9">
+                    <mxGeometry x="400" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="TaskRepository" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="31">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="queries" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="9">
+                    <mxGeometry x="590" y="50" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="&lt;div&gt;Query&lt;/div&gt;&lt;div&gt;GetAllTasksQuery&lt;/div&gt;&lt;div&gt;GetTaskDetailQuery&lt;/div&gt;&lt;div&gt;GetSummaryQuery&lt;br&gt;&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="33">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="Domain" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="420" width="380" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="common" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="10">
+                    <mxGeometry x="30" y="60" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="Entity&lt;div&gt;ValueObject&lt;/div&gt;&lt;div&gt;DomainEvent&lt;/div&gt;&lt;div&gt;AggregateRoot&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="35">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="37" value="tasks" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="10">
+                    <mxGeometry x="210" y="60" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="TaskStatus&lt;div&gt;TaskPriority&lt;/div&gt;&lt;div&gt;Task&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="37">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="controllers" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;whiteSpace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="90" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Controller&lt;div&gt;HomeController&lt;/div&gt;&lt;div&gt;TaskController&lt;/div&gt;" style="html=1;strokeColor=none;resizeWidth=1;resizeHeight=1;fillColor=none;part=1;connectable=0;allowArrows=0;deletable=0;whiteSpace=wrap;" vertex="1" parent="20">
+                    <mxGeometry width="150" height="70" relative="1" as="geometry">
+                        <mxPoint y="30" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
